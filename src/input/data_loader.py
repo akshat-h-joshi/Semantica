@@ -2,14 +2,13 @@ import json
 import numpy as np
 import arxiv
 from sentence_transformers import SentenceTransformer
-from ..constants import DATA_PATH, BASE_DIR, SECONDARY_EMBED_PATH, TFIDF_EMBED_PATH, MODEL_NAME_MPNET
+from ..utils.constants import DATA_PATH, BASE_DIR, SECONDARY_EMBED_PATH, TFIDF_EMBED_PATH, MODEL_NAME_MPNET
 from ..models.tfidf import TFIDFRecommender
 from scipy.sparse import save_npz, load_npz
 from scipy.sparse import csr_matrix, hstack
 import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import normalize
-
 
 def load_or_fetch_papers():
     if not DATA_PATH.exists():
@@ -19,6 +18,7 @@ def load_or_fetch_papers():
         papers = load_papers("data/arxiv_cs_ai.json")
     
     return papers
+
 
 def fetch_from_arxiv(db_query="cat:cs.AI", max_results=1000):
     """Loads papers from arxiv database and create a json file containing their details"""

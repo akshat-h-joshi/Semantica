@@ -1,7 +1,7 @@
 from sentence_transformers import SentenceTransformer, util
 import numpy as np
 from .recommender_base import RecommenderBase
-from ..constants import MODEL_NAME_MPNET
+from ..utils.constants import MODEL_NAME_MPNET
 
 class SBERTMpnet(RecommenderBase):
     def __init__(self, embeddings):

@@ -28,7 +28,7 @@ from ..models.hybrid import HybridRecommender
 
 from ..eval.evaluation import run_evaluation
 
-from ..constants import (
+from ..utils.constants import (
     MODEL_NAME_MPNET,
     MODEL_NAME_MINI,
     TFIDF_EMBED_PATH,

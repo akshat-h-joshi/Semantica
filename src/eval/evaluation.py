@@ -3,7 +3,7 @@ from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import json
 from ..input.data_loader import load_or_create_embeddings, load_or_create_tfidf_embeddings, load_or_fetch_papers
-from ..constants import DEFAULT_EMBED_PATH, MODEL_NAME_MINI, SECONDARY_EMBED_PATH, MODEL_NAME_MPNET, TFIDF_EMBED_PATH
+from ..utils.constants import DEFAULT_EMBED_PATH, MODEL_NAME_MINI, SECONDARY_EMBED_PATH, MODEL_NAME_MPNET, TFIDF_EMBED_PATH
 from ..models.hybrid import HybridRecommender
 from ..models.sbert_mpnet import SBERTMpnet
 from ..models.tfidf import TFIDFRecommender
