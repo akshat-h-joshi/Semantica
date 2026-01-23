@@ -1,34 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react"
+import SearchBar from "./components/SearchBar.tsx"
+import ResultsList from "./components/ResultsList.tsx"
+import type { RecommendationItem } from "./api/semantica"
+import "./App.css"
+import { motion } from "framer-motion"
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [results, setResults] = useState<RecommendationItem[]>([]) // App owns results
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <motion.div
+      className="app-container"
+      animate={{ y: results.length > 0 ? -120 : 0 }}
+      transition={{ duration: 0.6, ease: "easeInOut" }}>
+      <div className="app-header">
+        <h1 className="center-heading">Semantica</h1>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+
+      <div className="app-main">
+        <SearchBar setResults={setResults} /> {/* pass setter down */}
+
+        {results.length > 0 && (
+          <div className="results-container">
+            {results.length > 0 && <ResultsList results={results} />}
+          </div>)} 
+        
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </motion.div>
   )
 }
 
