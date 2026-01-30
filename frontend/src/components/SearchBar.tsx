@@ -10,14 +10,14 @@ interface Props {
 
 export default function SearchBar({ setResults }: Props) {
   const [query, setQuery] = useState("")
-  const [model, setModel] = useState("mpnet")
-  // const [loading, setLoading] = useState(false)
+  const [model, setModel] = useState("mini")
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const handleSearch = async () => {
     if (!query.trim()) return
 
-    // setLoading(true)
+    setLoading(true)
     setError(null)
 
     try {
@@ -26,7 +26,7 @@ export default function SearchBar({ setResults }: Props) {
     } catch (err) {
       setError("Failed to fetch recommendations")
     } finally {
-      // setLoading(false)
+      setLoading(false)
     }
   }
 
@@ -44,7 +44,7 @@ export default function SearchBar({ setResults }: Props) {
         <button onClick={handleSearch}>Search</button>
       </div>
 
-      {/* {loading && <p>Loading...</p>} */}
+      {loading && <p>Loading...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   )

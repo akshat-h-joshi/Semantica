@@ -1,6 +1,10 @@
 export interface RecommendationItem {
+  paper_id: string
   title: string
   score: number
+  keywords: string[]
+  abstract: string
+  link: string
 }
 
 export interface RecommendResponse {

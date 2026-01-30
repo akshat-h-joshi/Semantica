@@ -11,8 +11,8 @@ export default function ModelSelector({ model, setModel }: Props) {
       value={model}
       onChange={(e) => setModel(e.target.value)}
     >
-      <option value="mpnet">MPNet (semantic)</option>
       <option value="mini">MiniLM (semantic)</option>
+      <option value="mpnet">MPNet (semantic)</option>
       <option value="tfidf">TF-IDF (lexical)</option>
       <option value="hybrid">Hybrid (MPNet + TF-IDF)</option>
     </select>

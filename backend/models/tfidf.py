@@ -2,22 +2,34 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from .recommender_base import RecommenderBase
 import numpy as np
+from ..explainability.query_expansion import expand_query
 
 class TFIDFRecommender(RecommenderBase):
-    def __init__(self, vectorizer, embeddings):
+    def __init__(self, title_vectorizer, title_embeddings, abstract_vectorizer, abstract_embeddings):
         super().__init__(name="tfidf")
-        self.vectorizer = vectorizer
-        self.embeddings = embeddings
+        self.tv = title_vectorizer
+        self.te = title_embeddings
+        self.av = abstract_vectorizer
+        self.ae = abstract_embeddings
 
-    def embed(self, texts):
-        return self.vectorizer.transform(texts)
+    def embed(self, query):
+        return self.vectorizer.transform(query)
 
     def score(self, query):
-        query_emb = self.embed([query])
-        sim = cosine_similarity(query_emb, self.embeddings)
-        return sim[0]
+        expanded_query = expand_query(query)
+        query_text = " ".join(expanded_query)
+
+        q_title = self.tv.transform([query_text])
+        q_abs = self.av.transform([query_text])
+
+        title_sim = cosine_similarity(q_title, self.te)[0]
+        abstract_sim = cosine_similarity(q_abs, self.ae)[0]
+
+        scores = 0.7 * title_sim + 0.3 * abstract_sim
+
+        return scores
 
     def recommend_indices(self, query, top_k=5):
-        sims = self.score(query)
-        top = np.argsort(-sims)[:top_k]
-        return [(i, float(sims[i])) for i in top]
+        scores = self.score(query)
+        top = np.argsort(-scores)[:top_k]
+        return [(i, float(scores[i])) for i in top]

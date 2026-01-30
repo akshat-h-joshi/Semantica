@@ -8,8 +8,8 @@ class RecommendRequest(BaseModel):
     )
 
     model: str = Field(
-        default="mpnet",
-        description="Recommender model to use: mpnet | mini | tfidf | hybrid"
+        default="mini",
+        description="Recommender model to use: mini | mpnet | tfidf | hybrid"
     )
 
     top_k: int = Field(
@@ -20,7 +20,7 @@ class RecommendRequest(BaseModel):
     )
 
 class RecommendationItem(BaseModel):
-    paper_id: Optional[str] = Field(
+    paper_id: str = Field(
         default=None,
         description="Unique identifier for the paper"
     )
@@ -33,6 +33,21 @@ class RecommendationItem(BaseModel):
     score: float = Field(
         ...,
         description="Relevance score (model-specific)"
+    )
+
+    keywords: List[str] = Field(
+        ...,
+        description="Keywords most semantically relevant to query from paper"
+    )
+
+    abstract: str = Field(
+        ...,
+        description="Abstract of paper"
+    )
+
+    link: str = Field(
+        ...,
+        description="URL that links to paper"
     )
 
 class RecommendResponse(BaseModel):

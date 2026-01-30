@@ -11,7 +11,7 @@ function App() {
   return (
     <motion.div
       className="app-container"
-      animate={{ y: results.length > 0 ? -120 : 0 }}
+      animate={{ y: results.length > 0 ? -100 : 0 }}
       transition={{ duration: 0.6, ease: "easeInOut" }}>
       <div className="app-header">
         <h1 className="center-heading">Semantica</h1>

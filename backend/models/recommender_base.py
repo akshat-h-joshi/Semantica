@@ -24,6 +24,12 @@ class RecommenderBase(ABC):
         ranked = self.recommend_indices(query, top_k)
 
         return [
-            (papers[i]["title"], float(score))
+            {
+                "paper_id": str(i),
+                "title": papers[i]["title"],
+                "abstract": papers[i]["abstract"],
+                "score": float(score),
+                "link": papers[i]["link"]
+            }
             for i, score in ranked
         ]
