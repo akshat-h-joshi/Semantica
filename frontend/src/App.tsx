@@ -6,7 +6,7 @@ import "./App.css"
 import { motion } from "framer-motion"
 
 function App() {
-  const [results, setResults] = useState<RecommendationItem[]>([]) // App owns results
+  const [results, setResults] = useState<RecommendationItem[]>([])
 
   return (
     <motion.div
@@ -18,8 +18,7 @@ function App() {
       </div>
 
       <div className="app-main">
-        <SearchBar setResults={setResults} /> {/* pass setter down */}
-
+        <SearchBar setResults={setResults} />
         {results.length > 0 && (
           <div className="results-container">
             {results.length > 0 && <ResultsList results={results} />}

@@ -13,6 +13,7 @@ html, body {
 }
 
 .app-container {
+  /* zoom: 0.9; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -66,6 +67,10 @@ html, body {
   margin-top: 1rem;
 }
 
+.loading {
+  margin-bottom: -1rem;
+}
+
 .model-selector {
   width: 80%
 }
@@ -74,11 +79,7 @@ html, body {
   position: relative;
   top: 3%;
   width: 90vw;
-  /* max-width: 95vw; */
-  margin-left: -25rem;
-
-  /* background-color: #1f2933; */
-  /* border: 1px solid #374151; */
+  margin-left: -27rem;
   border-radius: 8px;
 
   padding: 1rem;
@@ -90,7 +91,6 @@ html, body {
   display: none;
 }
 
-
 .results-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(260px, 1fr));
@@ -101,7 +101,6 @@ html, body {
   background: #111;
   border-radius: 12px;
   padding: 1rem;
-  /* margin-bottom: 1rem; */
   display: flex;
   flex-direction: column;
   height: 300px;
@@ -116,6 +115,10 @@ html, body {
   text-decoration: none;
   color: inherit;
   cursor: pointer;
+}
+
+.paper-title:hover {
+  color: #4f46e5;
 }
 
 .abstract-container {
@@ -138,6 +141,90 @@ html, body {
   border-radius: 4px;
 }
 
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.45);
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: rgb(0, 0, 0);
+  padding: 1.5rem;
+  border-radius: 12px;
+  max-width: 50%;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+
+}
+
+.explanation-reason {
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.field-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: monospace;
+}
+
+.explain-btn {
+  margin-top: 0.75rem;
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.explain-btn:hover {
+  color: #4f46e5;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 50px;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.bar-label {
+  font-size: 0.9rem;
+  text-transform: capitalize;
+}
+
+.bar-track {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
+.bar-fill {
+  height: 100%;
+  background: #4f46e5;
+  border-radius: 999px;
+}
+
+.bar-value {
+  font-family: monospace;
+  font-size: 0.85rem;
+  text-align: right;
+}
+
+.close-btn {
+  margin-top: 1rem;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {

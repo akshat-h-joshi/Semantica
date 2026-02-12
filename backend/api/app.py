@@ -135,7 +135,6 @@ def get_models():
 @app.post("/api/v1/recommend", response_model=RecommendResponse)
 def recommend(req: RecommendRequest):
     model_name = req.model.lower()
-    print(model_name)
 
     if model_name not in {"mpnet", "mini", "tfidf", "hybrid"}:
         raise HTTPException(status_code=400, detail="Unknown model")
@@ -167,7 +166,8 @@ def recommend(req: RecommendRequest):
                 score=item["score"],
                 keywords=item["keywords"],
                 abstract=item["abstract"],
-                link=item["link"]
+                link=item["link"],
+                explanation=item["explanation"]
             )
             for item in results
         ]

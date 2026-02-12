@@ -10,6 +10,7 @@ from ..indexing.faiss_index import (
     save_index
 )
 from ..explainability.query_expansion import expand_query
+from ..explainability.explanation import base_explanation
 
 class SBERTFaissRecommender(RecommenderBase):
     def __init__(
@@ -55,12 +56,53 @@ class SBERTFaissRecommender(RecommenderBase):
         a_idx, a_scores = faiss_search(self.abstract_index, query_emb, k=top_k * 3)
 
         scores = {}
+        explanations = {}
 
         for i, s in zip(t_idx, t_scores):
             scores[i] = scores.get(i, 0) + 0.7 * s
 
+            if i not in explanations:
+                explanations[i] = {
+                    "model": self.name,
+                    "fields": {},
+                    "reason": None,
+                }
+
+            explanations[i]["fields"]["title"] = max(float(s), 0)
         for i, s in zip(a_idx, a_scores):
             scores[i] = scores.get(i, 0) + 0.3 * s
 
-        ranked = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-        return ranked[:top_k]
+            if i not in explanations:
+                explanations[i] = {
+                    "model": self.name,
+                    "fields": {},
+                    "reason": None,
+                }
+
+            explanations[i]["fields"]["abstract"] = max(float(s), 0)
+
+        ranked = sorted(scores.items(), key=lambda x: x[1], reverse=True)[:top_k]
+
+        results = []
+        for i, score in ranked:
+
+            fields = explanations[i]["fields"]
+            total = sum(fields.values())
+
+            for k in fields:
+                fields[k] = round(fields[k] / total, 4)
+                
+            field_list = ", ".join(explanations[i]["fields"].keys())
+
+            explanations[i]["reason"] = (
+                f"Semantically similar to the query based on its {field_list}, "
+                f"using expanded concepts such as {', '.join(expanded_query[:3])}"
+            )
+
+            results.append({
+                "index": i, 
+                "score": float(score), 
+                "explanation": explanations[i]
+            })
+
+        return results

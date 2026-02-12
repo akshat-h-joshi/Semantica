@@ -29,17 +29,6 @@ class KeyBERTExtractor:
 
         return [kw for kw, _ in keywords]
 
-    # def extract_batch(
-    #     self,
-    #     abstracts: List[str],
-    #     query: str,
-    #     top_k: int = 8
-    # ):
-    #     return [
-    #         self.extract_keywords(abstract, query, top_k)
-    #         for abstract in abstracts
-    #     ]
-
     @lru_cache(maxsize=2048)
     def extract_keywords_cached(
         self,

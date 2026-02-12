@@ -11,7 +11,7 @@ class RecommenderBase(ABC):
         self,
         query: str,
         top_k: int = 5
-    ) -> List[Tuple[int, float]]:
+    ) -> List[Dict[str, Any]]:
     
         pass
 
@@ -20,16 +20,20 @@ class RecommenderBase(ABC):
         query: str,
         papers: List[Dict],
         top_k: int = 5
-    ) -> List[Tuple[str, float]]:
+    ) -> List[Dict[str, Any]]:
         ranked = self.recommend_indices(query, top_k)
+        
+        results = []
+        for r in ranked:
+            i = r["index"]
 
-        return [
-            {
+            results.append({
                 "paper_id": str(i),
                 "title": papers[i]["title"],
                 "abstract": papers[i]["abstract"],
-                "score": float(score),
-                "link": papers[i]["link"]
-            }
-            for i, score in ranked
-        ]
+                "score": float(r["score"]),
+                "link": papers[i]["link"],
+                "explanation": r.get("explanation"),
+            })
+
+        return results

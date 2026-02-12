@@ -1,3 +1,12 @@
+export interface Explanation {
+  model: string
+  reason: string
+  fields?: Record<string, number>
+  matched_terms?: Record<string, string[]>
+  components?: Record<string, Explanation>
+}
+
+
 export interface RecommendationItem {
   paper_id: string
   title: string
@@ -5,6 +14,7 @@ export interface RecommendationItem {
   keywords: string[]
   abstract: string
   link: string
+  explanation: Explanation
 }
 
 export interface RecommendResponse {

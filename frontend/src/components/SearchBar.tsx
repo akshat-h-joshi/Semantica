@@ -44,7 +44,7 @@ export default function SearchBar({ setResults }: Props) {
         <button onClick={handleSearch}>Search</button>
       </div>
 
-      {loading && <p>Loading...</p>}
+      {loading && <p className="loading">Loading...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   )

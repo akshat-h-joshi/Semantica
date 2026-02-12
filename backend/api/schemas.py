@@ -19,6 +19,22 @@ class RecommendRequest(BaseModel):
         description="Number of papers to return"
     )
 
+class Explanation(BaseModel):
+    model: str
+
+    # used by SBERT / TFIDF
+    fields: Optional[Dict[str, float]] = None
+
+    # used by TFIDF only
+    matched_terms: Optional[Dict[str, List[str]]] = None
+
+    # used by hybrid / ensembles
+    components: Optional[Dict[str, "Explanation"]] = None
+
+    reason: str
+
+Explanation.model_rebuild()
+
 class RecommendationItem(BaseModel):
     paper_id: str = Field(
         default=None,
@@ -48,6 +64,11 @@ class RecommendationItem(BaseModel):
     link: str = Field(
         ...,
         description="URL that links to paper"
+    )
+
+    explanation: Explanation = Field(
+        ...,
+        description="Explanation of why this paper was chosen by model"
     )
 
 class RecommendResponse(BaseModel):
