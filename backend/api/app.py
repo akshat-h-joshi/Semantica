@@ -10,8 +10,10 @@ from .schemas import (
     RecommendationItem,
     ModelsResponse,
     ModelInfo,
-    EvaluateRequest,
-    EvaluateResponse
+    CompareRequest,
+    ModelMetrics,
+    RankChange,
+    CompareResponse
 )
 
 from ..input.data_loader import (
@@ -24,7 +26,7 @@ from ..models.sbert import SBERTFaissRecommender
 from ..models.tfidf import TFIDFRecommender
 from ..models.hybrid import HybridRecommender
 
-from ..eval.evaluation import run_evaluation
+from ..eval.eval_metrics import run_evaluation, compare_ranks
 
 from ..utils.constants import (
     MODEL_NAME_MPNET,
@@ -173,20 +175,37 @@ def recommend(req: RecommendRequest):
         ]
     )
 
-
-@app.post("/api/v1/evaluate", response_model=EvaluateResponse)
-def evaluate(req: EvaluateRequest):
-    results = {}
+@app.post("/api/v2/evaluate", response_model=CompareResponse)
+def compare_models(req: CompareRequest):
     papers = app.state.papers
+    recommenders = app.state.recommenders
 
-    for model_name in req.models:
-        model_name = model_name.lower()
+    baseline = req.baseline_model.lower()
+    compare = req.compare_model.lower()
 
-        if model_name not in {"mpnet", "mini", "tfidf", "hybrid"}:
-            raise HTTPException(status_code=400, detail="Unknown model")
+    allowed = {"mpnet", "mini", "tfidf", "hybrid"}
+    if baseline not in allowed or compare not in allowed:
+        raise HTTPException(status_code=400, detail="Unknown model")
 
-        results[model_name] = run_evaluation(model_name, papers, app.state.recommenders)
+    if baseline == compare:
+        raise HTTPException(status_code=400, detail="Models must be different")
 
-    return EvaluateResponse(
-        results=results
+    baseline_metrics = run_evaluation(baseline, papers, recommenders)
+    compare_metrics = run_evaluation(compare, papers, recommenders)
+
+    query = papers[0]["title"] 
+
+    base_results = recommenders[baseline].recommend_indices(query, top_k=50)
+    compare_results = recommenders[compare].recommend_indices(query, top_k=50)
+
+    rank_changes = compare_ranks(base_results, compare_results)
+
+    return CompareResponse(
+        baseline_model=baseline,
+        compare_model=compare,
+        metrics={
+            baseline: baseline_metrics,
+            compare: compare_metrics,
+        },
+        rank_changes=rank_changes
     )

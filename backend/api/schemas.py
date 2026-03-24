@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Dict, Optional 
+from typing import List, Dict, Optional
 
 class RecommendRequest(BaseModel):
     query: str = Field(
@@ -84,9 +84,23 @@ class ModelInfo(BaseModel):
 class ModelsResponse(BaseModel):
     models: List[ModelInfo]
 
-class EvaluateRequest(BaseModel):
-    models: List[str]
+class CompareRequest(BaseModel):
+    baseline_model: str
+    compare_model: str
 
-class EvaluateResponse(BaseModel):
-    results: Dict[str, Dict[str, float]]
+class ModelMetrics(BaseModel):
+    category_purity: float
+    mrr: float
+
+class RankChange(BaseModel):
+    base_rank: int
+    compare_rank: int | None
+    delta: int | None
+    status: str  # "improved" | "dropped" | "same" | "missing"
+
+class CompareResponse(BaseModel):
+    baseline_model: str
+    compare_model: str
+    metrics: dict[str, ModelMetrics]
+    rank_changes: dict[int, RankChange]
 

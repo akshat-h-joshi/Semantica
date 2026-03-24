@@ -1,3 +1,22 @@
+export interface ModelMetrics {
+  category_purity: number
+  mrr: number
+}
+
+export interface RankChange {
+  base_rank: number
+  compare_rank: number | null
+  delta: number | null
+  status: "improved" | "dropped" | "same" | "missing"
+}
+
+export interface CompareResponse {
+  baseline_model: string
+  compare_model: string
+  metrics: Record<string, ModelMetrics>
+  rank_changes: Record<string, RankChange>
+}
+
 export interface Explanation {
   model: string
   reason: string

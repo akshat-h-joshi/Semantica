@@ -10,7 +10,6 @@ from ..indexing.faiss_index import (
     save_index
 )
 from ..explainability.query_expansion import expand_query
-from ..explainability.explanation import base_explanation
 
 class SBERTFaissRecommender(RecommenderBase):
     def __init__(
