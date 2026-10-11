@@ -1,6 +1,6 @@
 # Semantica
 ## A Semantic Research Paper Recommender & Evaulation Framework
-Semantica is a research paper recommender that leverages sentence-transformer models and the K-Nearest Neighbours (KNN) algorithm to identify papers most relevant to user queries. Alongisde this, it serves as an evaluation platform to compare the performance of different embedding techniques, such as Sentence-BERT, TF-IDF, and hybrid models using industry-standard metrics.
+Semantica is a research paper recommender that leverages sentence-transformer models and the K-Nearest Neighbours (KNN) algorithm to identify papers most relevant to user queries. Alongside this, it serves as an evaluation platform to compare the performance of different embedding techniques, such as Sentence-BERT, TF-IDF, and hybrid models using industry-standard metrics.
 
 ## Installation
 ```
